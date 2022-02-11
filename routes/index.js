@@ -18,11 +18,13 @@
 // Роуты пользователей и роуты фильмов описаны в отдельных файлах. / 3.64
 
 const router = require('express').Router();
+const userRouter = require('./users');
 
-const testRouter = () => {
-  console.log('ROUTER');
-};
+// const auth = require('../middlewares/auth');
+// const testRouter = () => {
+//   console.log('ROUTER');
+// };
 
-router.get('/', testRouter);
+router.use(userRouter);
 
 module.exports = router;
