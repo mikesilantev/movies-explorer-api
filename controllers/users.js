@@ -8,9 +8,24 @@ const { JWT_KEY } = require('../utils/config');
 
 // Create New User
 const createUser = (req, res, next) => {
-  console.log(req.body);
-  console.log(JWT_KEY);
-  res.status(200);
+  bcrypt
+    .hash(req.body.password, 10)
+    .then((hash) => User.create({
+      email: req.body.email,
+      password: hash,
+      name: req.body.name,
+    }))
+    .then((user) => {
+      res.status(201).send({
+        _id: user._id,
+        email: user.email,
+        name: user.name,
+        password: user.password,
+      });
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 };
 // Login user
 const loginUser = (req, res, next) => {
