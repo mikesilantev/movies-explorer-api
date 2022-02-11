@@ -19,9 +19,11 @@
   },
   "homepage": "https://github.com/mikesilantev/movies-explorer-api#readme",
   "dependencies": {
+    "bcryptjs": "^2.4.3",
     "dotenv": "^15.0.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "express": "^4.17.2",
+    "jsonwebtoken": "^8.5.1",
     "mongoose": "^6.1.8",
     "validator": "^13.7.0"
   },
