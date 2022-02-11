@@ -1,27 +1,27 @@
 // controllers/users.js
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-// Models
+
 const User = require('../models/user');
+const { JWT_KEY } = require('../utils/config');
+// Errors
 
 // Create New User
-
+const createUser = (req, res, next) => {
+  console.log(req.body);
+  console.log(JWT_KEY);
+  res.status(200);
+};
 // Login user
-
+const loginUser = (req, res, next) => {
+  console.log(req);
+  res.status(200);
+};
 // Logout user
-
-
-
-
-
-
-
-
-
-
-
-
-
+const logoutUser = (req, res, next) => {
+  console.log(req);
+  res.status(200);
+};
 
 
 const getAllUsers = (req, res, next) => {
@@ -79,6 +79,9 @@ const pathUser = (req, res) => {
 };
 
 module.exports = {
+  createUser,
+  loginUser,
+  logoutUser,
   getAllUsers,
   getUser,
   pathUser,
