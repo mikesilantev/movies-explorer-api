@@ -10,7 +10,7 @@ const {
 // getAllUsers - тестовый роут, перед деплоем удалить
 userRouter.get('/users/me/', getAllUsers);
 // Роутеры для деплоя
-userRouter.get('/users/me/:id', getUser);
-userRouter.post('/users/me/:id', pathUser);
+userRouter.get('/users/me/', getUser);
+userRouter.post('/users/me/', pathUser);
 // Exports
 module.exports = userRouter;

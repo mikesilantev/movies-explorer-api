@@ -1,8 +1,28 @@
 // controllers/users.js
-// const bcrypt = require('bcryptjs');
-// const jwt = require('jsonwebtoken');
-
+const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
+// Models
 const User = require('../models/user');
+
+// Create New User
+
+// Login user
+
+// Logout user
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 const getAllUsers = (req, res, next) => {
   User.find({})
@@ -14,7 +34,10 @@ const getAllUsers = (req, res, next) => {
 };
 
 const getUser = (req, res, next) => {
-  User.findById({ _id: req.params.id })
+  const id = req.user._id;
+  console.log(req);
+  console.log(id);
+  User.findById(id)
     .orFail(() => {
       console.log('controllers/users.js orFail getUser');
     })
@@ -30,11 +53,19 @@ const getUser = (req, res, next) => {
 
 const pathUser = (req, res) => {
   const { name, email } = req.body;
+  console.log('pathUser');
   console.log(req.body);
+  console.log(req.params);
+  console.log(req.user._id);
+
   User.findByIdAndUpdate(
-    { _id: req.user._id },
+    req.user._id,
     { name, email },
-    { new: true },
+    {
+      New: true,
+      runValidators: true,
+      upsert: false,
+    },
   )
     .orFail(() => {
       console.log('ОШИБКА');
