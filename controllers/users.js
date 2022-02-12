@@ -30,6 +30,7 @@ const createUser = (req, res, next) => {
 // Login user
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
+
   console.log(email);
   console.log(password);
   console.log(JWT_KEY);
@@ -49,12 +50,12 @@ const loginUser = (req, res, next) => {
 };
 
 // Logout user
-const logoutUser = (req, res, next) => {
-  console.log(req);
-  res.status(200);
-};
+// const logoutUser = (req, res, next) => {
+//   console.log(req);
+//   res.status(200);
+// };
 
-
+// Test controller - delete
 const getAllUsers = (req, res, next) => {
   User.find({})
     .then((user) => {
@@ -64,6 +65,7 @@ const getAllUsers = (req, res, next) => {
     .catch(next);
 };
 
+// Get User Info
 const getUser = (req, res, next) => {
   const id = req.user._id;
   console.log(req);
@@ -82,12 +84,13 @@ const getUser = (req, res, next) => {
     });
 };
 
+// Path User Info
 const pathUser = (req, res) => {
   const { name, email } = req.body;
-  console.log('pathUser');
-  console.log(req.body);
-  console.log(req.params);
-  console.log(req.user._id);
+  // console.log('pathUser');
+  // console.log(req.body);
+  // console.log(req.params);
+  // console.log(req.user._id);
 
   User.findByIdAndUpdate(
     req.user._id,
@@ -112,7 +115,7 @@ const pathUser = (req, res) => {
 module.exports = {
   createUser,
   loginUser,
-  logoutUser,
+  // logoutUser,
   getAllUsers,
   getUser,
   pathUser,

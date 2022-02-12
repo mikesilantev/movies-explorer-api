@@ -7,7 +7,7 @@ const router = require('./routes/index');
 
 const { MONGO_URI, MONGO_CONFIG, JWT_KEY } = require('./utils/config');
 
-const { PORT = 3000, NODE_ENV} = process.env;
+const { PORT = 3000, NODE_ENV } = process.env;
 const app = express();
 
 mongoose.connect(MONGO_URI, MONGO_CONFIG);
