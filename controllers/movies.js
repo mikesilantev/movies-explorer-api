@@ -61,10 +61,35 @@ const createNewMovies = (req, res, next) => {
 
 // удаляет сохранённый фильм по id
 const removeMoviesById = (req, res, next) => {
+  const { _id } = req.params;
+  const ownerId = req.user._id;
 
+  // console.log(_id);
+  // console.log({ ownerId });
+
+  Movie.findById(_id)
+    .orFail(() => {
+      throw new Error('Карточка с указанным _id не найдена.');
+    })
+    .then((movie) => {
+      if (!movie.owner.includes(ownerId)) {
+        next(new Error('Вы пытаетесь удалить чужой фильм'));
+      } else {
+        Movie.findByIdAndRemove(_id)
+          .then((removeCard) => {
+            res.status(200).send(removeCard);
+          })
+          .catch(next);
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      next(err);
+    });
 };
 
 module.exports = {
   getAllMovies,
   createNewMovies,
+  removeMoviesById,
 };
