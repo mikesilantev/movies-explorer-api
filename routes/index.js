@@ -27,10 +27,12 @@ const {
 } = require('../controllers/users');
 
 const userRouter = require('./users');
+const movieRouter = require('./movies');
 
 router.post('/signin', loginUser);
 router.post('/signup', createUser);
 
 router.use(auth, userRouter);
+router.use(auth, movieRouter);
 
 module.exports = router;

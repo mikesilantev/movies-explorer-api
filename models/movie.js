@@ -9,7 +9,7 @@ const movieSchema = new mongoose.Schema({
     required: true,
   },
   director: {
-    type: Number,
+    type: String,
     required: true,
   },
   duration: {
@@ -32,7 +32,7 @@ const movieSchema = new mongoose.Schema({
       message: 'Неправильный формат изображения',
     },
   },
-  trailerLink: {
+  trailer: {
     type: String,
     required: true,
     validate: {
