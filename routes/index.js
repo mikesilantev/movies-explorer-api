@@ -19,6 +19,8 @@
 
 const router = require('express').Router();
 
+const { requestLogger, errorLogger } = require('../middlewares/logger');
+
 const auth = require('../middlewares/auth');
 
 const {
@@ -29,6 +31,8 @@ const {
 const userRouter = require('./users');
 const movieRouter = require('./movies');
 
+router.use(requestLogger);
+
 router.post('/signin', loginUser);
 router.post('/signup', createUser);
 
@@ -38,4 +42,7 @@ router.use(auth, movieRouter);
 router.all('*', () => {
   throw new Error('Запрошен несуществующий роутер');
 });
+
+router.use(errorLogger);
+
 module.exports = router;
