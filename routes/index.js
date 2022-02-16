@@ -35,4 +35,7 @@ router.post('/signup', createUser);
 router.use(auth, userRouter);
 router.use(auth, movieRouter);
 
+router.all('*', () => {
+  throw new Error('Запрошен несуществующий роутер');
+});
 module.exports = router;
