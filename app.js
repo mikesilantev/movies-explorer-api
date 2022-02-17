@@ -1,20 +1,16 @@
 require('dotenv').config();
 const express = require('express');
-const helmet = require("helmet");
-
+const helmet = require('helmet');
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
 
 const router = require('./routes/index');
-
 const { MONGO_URI, MONGO_CONFIG, JWT_KEY } = require('./utils/config');
 
 const { PORT = 3000, NODE_ENV } = process.env;
 const app = express();
 
 mongoose.connect(MONGO_URI, MONGO_CONFIG);
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+
 app.use(helmet());
 app.use('/', router);
 
