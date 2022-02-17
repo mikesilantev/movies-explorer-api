@@ -2,11 +2,11 @@
 
 const router = require('express').Router();
 const bodyParser = require('body-parser');
+
 const {
-  celebrate,
-  Joi,
-  Segments,
-} = require('celebrate');
+  signinValidation,
+  signupValidation,
+} = require('../middlewares/celebrateValidation');
 
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
@@ -27,26 +27,13 @@ router.use(bodyParser.urlencoded({ extended: true }));
 
 router.post(
   '/signin',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string().required().min(8).max(30),
-    }),
-  }),
+  signinValidation,
   loginUser,
 );
 
 router.post(
   '/signup',
-  celebrate({
-    [Segments.BODY]: Joi.object().keys({
-      email: Joi.string().required().email(),
-      password: Joi.string()
-        .required()
-        .regex(/^[a-z0-9_-]{8,}$/),
-      name: Joi.string().regex(/^[a-z0-9_-]{2,30}$/),
-    }),
-  }),
+  signupValidation,
   createUser,
 );
 
