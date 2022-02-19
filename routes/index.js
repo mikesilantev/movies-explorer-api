@@ -6,7 +6,7 @@ const bodyParser = require('body-parser');
 const {
   signinValidation,
   signupValidation,
-} = require('../middlewares/celebrateValidation');
+} = require('../middlewares/celebrate');
 
 const { requestLogger, errorLogger } = require('../middlewares/logger');
 
