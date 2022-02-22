@@ -7,6 +7,7 @@ const {
 
 const {
   SIGNIN_MSG,
+  CREATE_MOVIE_MSG,
 } = require('../utils/constants');
 
 // signin routes validation
@@ -96,10 +97,10 @@ const createMovieValidation = celebrate({
       .pattern(/^[а-яА-ЯёЁ]+$/)
       .prefs({
         messages: {
-          'string.empty': 'Пусто бля', // r
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.COUNTRY,
+          'string.min': CREATE_MOVIE_MSG.COUNTRY_MIN,
+          'string.max': CREATE_MOVIE_MSG.COUNTRY_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.COUNTRY_ERR,
         },
       }),
     director: Joi.string() // ready
@@ -109,10 +110,10 @@ const createMovieValidation = celebrate({
       .pattern(/^[а-яА-ЯёЁ]+$/)
       .prefs({
         messages: {
-          'string.empty': '1',
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.DIRECTOR,
+          'string.min': CREATE_MOVIE_MSG.DIRECTOR_MIN,
+          'string.max': CREATE_MOVIE_MSG.DIRECTOR_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.DIRECTOR_ERR, // Если не соответствует REGEX
         },
       }),
     duration: Joi.number() // ready
@@ -122,9 +123,9 @@ const createMovieValidation = celebrate({
       .max(999)
       .prefs({
         messages: {
-          'string.empty': '1',
-          'string.min': '2',
-          'string.max': '3',
+          'string.empty': CREATE_MOVIE_MSG.DURATION,
+          'string.min': CREATE_MOVIE_MSG.DURATION_MIN,
+          'string.max': CREATE_MOVIE_MSG.DURATION_MAX,
         },
       }),
 
@@ -135,10 +136,10 @@ const createMovieValidation = celebrate({
       .pattern(/[0-9]$/)
       .prefs({
         messages: {
-          'string.empty': 'Поле год пустое',
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.YEAR,
+          'string.min': CREATE_MOVIE_MSG.YEAR_MIN,
+          'string.max': CREATE_MOVIE_MSG.YEAR_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.YEAR_ERR, // Если не соответствует REGEX
         },
       }),
 
@@ -149,10 +150,10 @@ const createMovieValidation = celebrate({
       .pattern(/[а-яА-ЯёЁa-zA-Z0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
-          'string.empty': 'Поле год пустое',
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.DESCRIPTION,
+          'string.min': CREATE_MOVIE_MSG.DESCRIPTION_MIN,
+          'string.max': CREATE_MOVIE_MSG.DESCRIPTION_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.DESCRIPTION_ERR, // Если не соответствует REGEX
         },
       }),
     image: Joi.string()
@@ -162,10 +163,10 @@ const createMovieValidation = celebrate({
       .uri()
       .prefs({
         messages: {
-          'string.empty': 'ПУСТО',
-          'string.min': '2',
-          'string.max': '3',
-          'string.uri': 'Неправильно заполнено поле url',
+          'string.empty': CREATE_MOVIE_MSG.IMAGE,
+          'string.min': CREATE_MOVIE_MSG.IMAGE_MIN,
+          'string.max': CREATE_MOVIE_MSG.IMAGE_NAX,
+          'string.uri': CREATE_MOVIE_MSG.IMAGE_ERR,
         },
       }),
     trailer: Joi.string()
@@ -175,10 +176,10 @@ const createMovieValidation = celebrate({
       .uri()
       .prefs({
         messages: {
-          'string.empty': 'ПУСТО',
-          'string.min': '2',
-          'string.max': '3',
-          'string.uri': 'Неправильно заполнено поле url',
+          'string.empty': CREATE_MOVIE_MSG.TRAILER,
+          'string.min': CREATE_MOVIE_MSG.TRAILER_MIN,
+          'string.max': CREATE_MOVIE_MSG.TRAILER_MAX,
+          'string.uri': CREATE_MOVIE_MSG.TRAILER_ERR,
         },
       }),
     nameRU: Joi.string()
@@ -188,10 +189,10 @@ const createMovieValidation = celebrate({
       .pattern(/[а-яА-ЯёЁ0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
-          'string.empty': 'Пусто бля', // r
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.NAMERU, // r
+          'string.min': CREATE_MOVIE_MSG.NAMERU_MIN,
+          'string.max': CREATE_MOVIE_MSG.NAMERU_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.NAMERU_ERR, // Если не соответствует REGEX
         },
       }),
     nameEN: Joi.string()
@@ -201,10 +202,10 @@ const createMovieValidation = celebrate({
       .pattern(/[a-zA-Z0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
-          'string.empty': 'Пусто бля', // r
-          'string.min': '2',
-          'string.max': '3',
-          'string.pattern.base': 'Кукубля', // Если не соответствует REGEX
+          'string.empty': CREATE_MOVIE_MSG.NAMEEN, // r
+          'string.min': CREATE_MOVIE_MSG.NAMEEN_MIN,
+          'string.max': CREATE_MOVIE_MSG.NAMEEN_MAX,
+          'string.pattern.base': CREATE_MOVIE_MSG.NAMEEN_ERR, // Если не соответствует REGEX
         },
       }),
     thumbnail: Joi.string()
@@ -214,19 +215,14 @@ const createMovieValidation = celebrate({
       .uri()
       .prefs({
         messages: {
-          'string.empty': 'ПУСТО',
-          'string.min': '2',
-          'string.max': '3',
-          'string.uri': 'Неправильно заполнено поле url',
+          'string.empty': CREATE_MOVIE_MSG.THUMBNAIL,
+          'string.min': CREATE_MOVIE_MSG.THUMBNAIL_MIN,
+          'string.max': CREATE_MOVIE_MSG.THUMBNAIL_MAX,
+          'string.uri': CREATE_MOVIE_MSG.THUMBNAIL_ERR,
         },
       }),
     movieId: Joi.number()
-      .required()
-      .prefs({
-        messages: {
-          'string.empty': 'ПУСТО',
-        },
-      }),
+      .required(),
   }),
 });
 
