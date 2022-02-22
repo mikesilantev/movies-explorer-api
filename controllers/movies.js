@@ -1,7 +1,10 @@
 // controllers/movies.js
+// переделать создание фильма
 
 const Movie = require('../models/movie');
-
+const NotFoundError = require('../errors/NotFoundError');
+const ConflictError = require('../errors/ConflictError');
+const ForbiddenError = require('../errors/ForbiddenError');
 // возвращает все сохранённые текущим  пользователем фильмы
 const getAllMovies = (req, res, next) => {
   const ownerId = req.user._id;
@@ -9,20 +12,17 @@ const getAllMovies = (req, res, next) => {
   Movie.find({ ownerId })
     .populate('owner')
     .orFail(() => {
-      console.log('controllers/movies.js orFail getAllMovies');
+      throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((movies) => {
       res.status(200).send(movies);
       console.log(movies);
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 };
 // создаёт фильм с переданными в теле
-// country, director, duration, year
-// description, image, trailer, nameRU, nameEN и thumbnail, movieId
 const createNewMovies = (req, res, next) => {
   Movie.create({
     owner: req.user._id,
@@ -55,7 +55,11 @@ const createNewMovies = (req, res, next) => {
       });
     })
     .catch((err) => {
-      next(err);
+      if (err.code === 11000) {
+        next(new ConflictError('Ошибка ввода данных'));
+      } else {
+        next(err);
+      }
     });
 };
 
@@ -64,16 +68,13 @@ const removeMoviesById = (req, res, next) => {
   const { _id } = req.params;
   const ownerId = req.user._id;
 
-  // console.log(_id);
-  // console.log({ ownerId });
-
   Movie.findById(_id)
     .orFail(() => {
-      throw new Error('Карточка с указанным _id не найдена.');
+      throw new NotFoundError('Нет фильма с указанным id');
     })
     .then((movie) => {
       if (!movie.owner.includes(ownerId)) {
-        next(new Error('Вы пытаетесь удалить чужой фильм'));
+        next(new ForbiddenError('Вы пытаетесь удалить чужой фильм'));
       } else {
         Movie.findByIdAndRemove(_id)
           .then((removeCard) => {
@@ -83,7 +84,6 @@ const removeMoviesById = (req, res, next) => {
       }
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 };

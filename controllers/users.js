@@ -4,7 +4,10 @@ const jwt = require('jsonwebtoken');
 
 const { JWT_KEY } = require('../utils/config');
 const User = require('../models/user');
-// Errors
+
+const UnauthorizedError = require('../errors/UnauthorizedError');
+const ConflictError = require('../errors/ConflictError');
+const NotFoundError = require('../errors/NotFoundError');
 
 // Create New User
 const createUser = (req, res, next) => {
@@ -17,25 +20,22 @@ const createUser = (req, res, next) => {
     }))
     .then((user) => {
       res.status(201).send({
-        // _id: user._id,
         email: user.email,
         name: user.name,
-        // password: user.password,
       });
     })
     .catch((err) => {
-      next(err);
+      if (err.code === 11000) {
+        next(new ConflictError('Пользователь с таким email уже существует.'));
+      } else {
+        next(err);
+      }
     });
 };
+
 // Login user
 const loginUser = (req, res, next) => {
   const { email, password } = req.body;
-
-  console.log(email);
-  console.log(password);
-  console.log(JWT_KEY);
-
-  // findUserByCredentials из models/user.js
   return User.findUserByCredentials(email, password)
     .then((user) => {
       res.send({
@@ -45,22 +45,19 @@ const loginUser = (req, res, next) => {
       });
     })
     .catch((err) => {
-      next(err);
+      if (err.message === 'Неправильная почта или пароль') {
+        next(new UnauthorizedError('Неправильная почта или пароль'));
+      } else {
+        next(err);
+      }
     });
 };
-
-// Logout user
-// const logoutUser = (req, res, next) => {
-//   console.log(req);
-//   res.status(200);
-// };
 
 // Test controller - delete
 const getAllUsers = (req, res, next) => {
   User.find({})
     .then((user) => {
       res.status(200).send(user);
-      console.log(user);
     })
     .catch(next);
 };
@@ -68,30 +65,21 @@ const getAllUsers = (req, res, next) => {
 // Get User Info
 const getUser = (req, res, next) => {
   const id = req.user._id;
-  console.log(req);
-  console.log(id);
   User.findById(id)
     .orFail(() => {
-      console.log('controllers/users.js orFail getUser');
+      throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((user) => {
       res.status(200).send(user);
-      console.log(user);
     })
     .catch((err) => {
-      console.log(err);
       next(err);
     });
 };
 
 // Path User Info
-const pathUser = (req, res) => {
+const pathUser = (req, res, next) => {
   const { name, email } = req.body;
-  // console.log('pathUser');
-  // console.log(req.body);
-  // console.log(req.params);
-  // console.log(req.user._id);
-
   User.findByIdAndUpdate(
     req.user._id,
     { name, email },
@@ -102,20 +90,23 @@ const pathUser = (req, res) => {
     },
   )
     .orFail(() => {
-      console.log('ОШИБКА');
+      throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((user) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      console.log(err);
+      if (err.code === 11000) {
+        next(new ConflictError('Ошибка ввода данных'));
+      } else {
+        next(err);
+      }
     });
 };
 
 module.exports = {
   createUser,
   loginUser,
-  // logoutUser,
   getAllUsers,
   getUser,
   pathUser,
