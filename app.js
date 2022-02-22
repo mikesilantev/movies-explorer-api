@@ -4,6 +4,10 @@ const helmet = require('helmet');
 const { errors } = require('celebrate');
 const mongoose = require('mongoose');
 
+const limiter = require('./middlewares/rateLimiter');
+// CORS
+// RATE LIMITER
+
 const errorHandler = require('./middlewares/errors');
 
 const router = require('./routes/index');
@@ -15,6 +19,8 @@ const app = express();
 mongoose.connect(MONGO_URI, MONGO_CONFIG);
 
 app.use(helmet());
+app.use(limiter);
+
 app.use(router);
 
 app.use(errors());
