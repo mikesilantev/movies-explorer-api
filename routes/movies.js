@@ -5,7 +5,6 @@ const {
   createMovieValidation,
 } = require('../middlewares/celebrate');
 
-
 const {
   getAllMovies,
   createNewMovies,
