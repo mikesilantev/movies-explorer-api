@@ -1,3 +1,23 @@
+// CONFIG
+const { NODE_ENV, JWT_SECRET, DB_HOST } = process.env;
+
+const MONGO_URI = NODE_ENV === 'production' ? DB_HOST : 'mongodb://localhost:27017/moviesdb';
+const MONGO_CONFIG = ({
+  useNewUrlParser: true,
+  // useUnifiedTopology: true,
+});
+
+const JWT_KEY = NODE_ENV === 'production' ? JWT_SECRET : 'dev-secret';
+
+// CORS
+const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
+const ALLOWED_CORS = [
+  'http://localhost:3000',
+  'https://localhost:3000',
+  'http://zootoo.ru',
+  'https://api.zootoo.ru',
+];
+
 // Авторизация и регистрация
 const SIGNIN_MSG = {
   // email
@@ -75,10 +95,9 @@ const CREATE_MOVIE_MSG = {
 module.exports = {
   SIGNIN_MSG,
   CREATE_MOVIE_MSG,
+  MONGO_URI,
+  MONGO_CONFIG,
+  JWT_KEY,
+  DEFAULT_ALLOWED_METHODS,
+  ALLOWED_CORS,
 };
-
-// Для ошибок API созданы классы, расширяющие конструктор Error.
-// / 0.71
-
-// Настроен rate limiter: число запросов с одного IP в единицу времени ограничено. / 0.71
-// rate limiter сконфигурирован в отдельном файле и импортируется в app.js. / 0.71

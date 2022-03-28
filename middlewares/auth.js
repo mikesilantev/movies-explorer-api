@@ -1,6 +1,6 @@
 // middlewares/auth.js
 const jwt = require('jsonwebtoken');
-const { JWT_KEY } = require('../utils/config');
+const { JWT_KEY } = require('../utils/constants');
 
 const UnauthorizedError = require('../errors/UnauthorizedError');
 

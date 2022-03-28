@@ -1,14 +1,9 @@
 // routes/index.js
-
 const router = require('express').Router();
-const bodyParser = require('body-parser');
-
 const {
   signinValidation,
   signupValidation,
 } = require('../middlewares/celebrate');
-
-const { requestLogger, errorLogger } = require('../middlewares/logger');
 
 const auth = require('../middlewares/auth');
 

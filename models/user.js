@@ -27,7 +27,6 @@ const userSchema = new mongoose.Schema({
   },
 });
 
-// Поиск юзера по email, при нахождении сопоставляет пароль
 userSchema.statics.findUserByCredentials = function fn(email, password) {
   return this.findOne({ email })
     .select('+password')
@@ -41,9 +40,6 @@ userSchema.statics.findUserByCredentials = function fn(email, password) {
           if (!matched) {
             return Promise.reject(new Error('Неправильная почта или пароль'));
           }
-          // console.log(user);
-          // console.log(password);
-          // console.log(user.password);
           return user;
         });
     });
