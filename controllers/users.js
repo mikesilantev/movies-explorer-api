@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken');
 const { JWT_KEY } = require('../utils/config');
 const User = require('../models/user');
 
-const BadRequestError = require('../errors/BadRequestError')
+const BadRequestError = require('../errors/BadRequestError');
 const UnauthorizedError = require('../errors/UnauthorizedError');
 const ConflictError = require('../errors/ConflictError');
 const NotFoundError = require('../errors/NotFoundError');
@@ -98,7 +98,7 @@ const pathUser = (req, res, next) => {
     })
     .catch((err) => {
       if (err.code === 11000) {
-        next(new ConflictError('Ошибка ввода данных'));
+        next(new ConflictError('Почтовый ящик с таким именем занят!'));
       }
       if (err.name === 'ValidationError') {
         next(new BadRequestError(err.message));

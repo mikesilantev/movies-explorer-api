@@ -2,6 +2,7 @@
 // переделать создание фильма
 
 const Movie = require('../models/movie');
+const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const ForbiddenError = require('../errors/ForbiddenError');
@@ -15,7 +16,7 @@ const getAllMovies = (req, res, next) => {
       throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((movies) => {
-      res.status(200).send(movies);
+      res.send(movies);
     })
     .catch((err) => {
       next(err);
@@ -72,17 +73,21 @@ const removeMoviesById = (req, res, next) => {
       throw new NotFoundError('Нет фильма с указанным id');
     })
     .then((movie) => {
-      if (!movie.owner.includes(ownerId)) {
+      // if (!movie.owner.includes(ownerId)) {
+      if (movie.owner.toString() !== ownerId) {
         next(new ForbiddenError('Вы пытаетесь удалить чужой фильм'));
       } else {
         Movie.findByIdAndRemove(_id)
           .then((removeCard) => {
-            res.status(200).send(removeCard);
+            res.send(removeCard);
           })
           .catch(next);
       }
     })
     .catch((err) => {
+      if (err.name === 'CastError') {
+        next(new BadRequestError('Неправильный формат id'));
+      }
       next(err);
     });
 };
