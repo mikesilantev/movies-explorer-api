@@ -20,11 +20,6 @@ const {
 const userRouter = require('./users');
 const movieRouter = require('./movies');
 
-router.use(requestLogger);
-
-router.use(bodyParser.json());
-router.use(bodyParser.urlencoded({ extended: true }));
-
 router.post(
   '/signin',
   signinValidation,
@@ -43,7 +38,5 @@ router.use(auth, movieRouter);
 router.all('*', () => {
   throw new Error('Запрошен несуществующий роутер');
 });
-
-router.use(errorLogger);
 
 module.exports = router;
