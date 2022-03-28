@@ -58,7 +58,7 @@ const loginUser = (req, res, next) => {
 const getAllUsers = (req, res, next) => {
   User.find({})
     .then((user) => {
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch(next);
 };
@@ -71,7 +71,7 @@ const getUser = (req, res, next) => {
       throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((user) => {
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch((err) => {
       next(err);
@@ -94,7 +94,7 @@ const pathUser = (req, res, next) => {
       throw new NotFoundError('Пользователь с указанным _id не найден.');
     })
     .then((user) => {
-      res.status(200).send(user);
+      res.send(user);
     })
     .catch((err) => {
       if (err.code === 11000) {
