@@ -16,7 +16,6 @@ const getAllMovies = (req, res, next) => {
     })
     .then((movies) => {
       res.status(200).send(movies);
-      console.log(movies);
     })
     .catch((err) => {
       next(err);
