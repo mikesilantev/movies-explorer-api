@@ -1,9 +1,12 @@
 // middlewares//celebrate.js
+
 const {
   celebrate,
   Joi,
   Segments,
 } = require('celebrate');
+
+const validator = require('validator');
 
 const {
   SIGNIN_MSG,
@@ -87,6 +90,34 @@ const signupValidation = celebrate({
   }),
 });
 
+const updateUserValidation = celebrate({
+  [Segments.BODY]: Joi.object().keys({
+    name: Joi.string()
+      .min(2)
+      .max(30)
+      .pattern(/^[а-яА-ЯёЁa-zA-Z0-9]+$/)
+      .prefs({
+        messages: {
+          'string.min': SIGNIN_MSG.NAME_MIN,
+          'string.max': SIGNIN_MSG.NAME_MAX,
+          'string.pattern.base': SIGNIN_MSG.NAME_ERR,
+        },
+      }),
+    email: Joi.string()
+      .min(8)
+      .max(50)
+      .email()
+      .prefs({
+        messages: {
+          'string.empty': SIGNIN_MSG.EMAIL,
+          'string.min': SIGNIN_MSG.EMAIL_MIN,
+          'string.max': SIGNIN_MSG.EMAIL_MAX,
+          'string.email': SIGNIN_MSG.EMAIL_ERR,
+        },
+      }),
+  }),
+});
+
 // Create Movie Validation
 const createMovieValidation = celebrate({
   [Segments.BODY]: Joi.object().keys({
@@ -160,7 +191,12 @@ const createMovieValidation = celebrate({
       .required()
       .min(12)
       .max(256)
-      .uri()
+      .custom((v, h) => {
+        if (validator.isURL(v)) {
+          return v;
+        }
+        return h.message('Неправильный формат ссылки!');
+      })
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.IMAGE,
@@ -173,7 +209,12 @@ const createMovieValidation = celebrate({
       .required()
       .min(12)
       .max(256)
-      .uri()
+      .custom((v, h) => {
+        if (validator.isURL(v)) {
+          return v;
+        }
+        return h.message('Неправильный формат ссылки!');
+      })
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.TRAILER,
@@ -212,7 +253,12 @@ const createMovieValidation = celebrate({
       .required()
       .min(12)
       .max(256)
-      .uri()
+      .custom((v, h) => {
+        if (validator.isURL(v)) {
+          return v;
+        }
+        return h.message('Неправильный формат ссылки!');
+      })
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.THUMBNAIL,
@@ -226,8 +272,18 @@ const createMovieValidation = celebrate({
   }),
 });
 
+const deleteMovieValidation = celebrate({
+  [Segments.PARAMS]: Joi.object().keys({
+    _id: Joi.string()
+      .hex()
+      .length(24),
+  }),
+});
+
 module.exports = {
   signinValidation,
   signupValidation,
+  updateUserValidation,
   createMovieValidation,
+  deleteMovieValidation,
 };

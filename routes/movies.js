@@ -3,6 +3,7 @@
 const movieRouter = require('express').Router();
 const {
   createMovieValidation,
+  deleteMovieValidation,
 } = require('../middlewares/celebrate');
 
 const {
@@ -19,6 +20,10 @@ movieRouter.post(
   createNewMovies,
 );
 
-movieRouter.delete('/movies/:_id', removeMoviesById);
+movieRouter.delete(
+  '/movies/:_id',
+  deleteMovieValidation,
+  removeMoviesById,
+);
 
 module.exports = movieRouter;

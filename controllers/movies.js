@@ -6,6 +6,7 @@ const BadRequestError = require('../errors/BadRequestError');
 const NotFoundError = require('../errors/NotFoundError');
 const ConflictError = require('../errors/ConflictError');
 const ForbiddenError = require('../errors/ForbiddenError');
+
 // возвращает все сохранённые текущим  пользователем фильмы
 const getAllMovies = (req, res, next) => {
   const ownerId = req.user._id;
@@ -73,8 +74,7 @@ const removeMoviesById = (req, res, next) => {
       throw new NotFoundError('Нет фильма с указанным id');
     })
     .then((movie) => {
-      // if (!movie.owner.includes(ownerId)) {
-      if (movie.owner.toString() !== ownerId) {
+      if (movie.owner.toHexString() === ownerId) {
         next(new ForbiddenError('Вы пытаетесь удалить чужой фильм'));
       } else {
         Movie.findByIdAndRemove(_id)
