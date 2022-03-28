@@ -107,7 +107,7 @@ const createMovieValidation = celebrate({
       .required()
       .min(4)
       .max(255)
-      .pattern(/^[а-яА-ЯёЁ]+$/)
+      .pattern(/[а-яА-ЯёЁ0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.DIRECTOR,
@@ -169,7 +169,7 @@ const createMovieValidation = celebrate({
           'string.uri': CREATE_MOVIE_MSG.IMAGE_ERR,
         },
       }),
-    trailer: Joi.string()
+    trailerLink: Joi.string()
       .required()
       .min(12)
       .max(256)

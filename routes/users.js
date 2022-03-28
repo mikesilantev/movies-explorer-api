@@ -10,7 +10,7 @@ const {
 
 // Роутеры для деплоя
 userRouter.get('/users/me', getUser);
-userRouter.post('/users/me', pathUser);
+userRouter.patch('/users/me', pathUser);
 
 // getAllUsers - тестовый роут, перед деплоем удалить
 userRouter.get('/users/all', getAllUsers);
