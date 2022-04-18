@@ -16,6 +16,7 @@ const ALLOWED_CORS = [
   'https://localhost:3000',
   'http://zootoo.ru',
   'https://api.zootoo.ru',
+  '*',
 ];
 
 // Авторизация и регистрация
