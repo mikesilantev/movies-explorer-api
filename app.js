@@ -14,7 +14,7 @@ const errorHandler = require('./middlewares/errors');
 const router = require('./routes/index');
 const { MONGO_URI, MONGO_CONFIG } = require('./utils/constants');
 
-const { PORT = 3000 } = process.env;
+const { PORT = 8080 } = process.env;
 const app = express();
 
 app.use(cors);

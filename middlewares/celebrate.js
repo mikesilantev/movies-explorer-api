@@ -124,8 +124,8 @@ const createMovieValidation = celebrate({
     country: Joi.string() // ready
       .required()
       .min(3) // Чад
-      .max(74) // Аль-Джумахирия аль-Арабия аль-Либия аш Шабия аль-Иштиракия аль-Узма (Ливия)
-      .pattern(/^[а-яА-ЯёЁ]+$/)
+      .max(100) // Аль-Джумахирия аль-Арабия аль-Либия аш Шабия аль-Иштиракия аль-Узма (Ливия)
+      .pattern(/^[а-яА-Яa-zA-Z+&=*:,-.]/)
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.COUNTRY,
@@ -177,7 +177,7 @@ const createMovieValidation = celebrate({
     description: Joi.string()
       .required()
       .min(2)
-      .max(900)
+      .max(1500)
       .pattern(/[а-яА-ЯёЁa-zA-Z0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
