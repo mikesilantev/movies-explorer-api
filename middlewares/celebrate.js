@@ -78,7 +78,7 @@ const signupValidation = celebrate({
       .required()
       .min(2)
       .max(30)
-      .pattern(/^[а-яА-ЯёЁa-zA-Z0-9]+$/)
+      .pattern(/^[а-яА-ЯёЁa-zA-Z0-9\s]+$/)
       .prefs({
         messages: {
           'string.empty': SIGNIN_MSG.NAME,
@@ -227,7 +227,7 @@ const createMovieValidation = celebrate({
       .required()
       .min(2)
       .max(100)
-      .pattern(/[а-яА-ЯёЁ0-9+&=*:"'@!#$%;?(),-.]/)
+      .pattern(/[a-zA-Zа-яА-ЯёЁ0-9+&=*:"'@!#$%;?(),-.]/)
       .prefs({
         messages: {
           'string.empty': CREATE_MOVIE_MSG.NAMERU, // r

@@ -16,6 +16,8 @@ const ALLOWED_CORS = [
   'https://localhost:3000',
   'http://zootoo.ru',
   'https://api.zootoo.ru',
+  'http://192.168.1.6:3000',
+  'http://192.168.1.6',
   '*',
 ];
 

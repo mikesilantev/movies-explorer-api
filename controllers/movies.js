@@ -41,6 +41,7 @@ const createNewMovies = (req, res, next) => {
   })
     .then((movie) => {
       res.status(201).send({
+        _id: movie._id,
         owner: movie.owner,
         country: movie.country,
         director: movie.director,
@@ -50,6 +51,7 @@ const createNewMovies = (req, res, next) => {
         image: movie.image,
         trailerLink: movie.trailerLink,
         nameRU: movie.nameRU,
+
         nameEN: movie.nameEN,
         thumbnail: movie.thumbnail,
         movieId: movie.movieId,
@@ -66,15 +68,22 @@ const createNewMovies = (req, res, next) => {
 
 // удаляет сохранённый фильм по id
 const removeMoviesById = (req, res, next) => {
+
+  // const { _id } = req.params;
   const { _id } = req.params;
   const ownerId = req.user._id;
 
+  // Movie.findById(_id)
   Movie.findById(_id)
     .orFail(() => {
       throw new NotFoundError('Нет фильма с указанным id');
     })
     .then((movie) => {
-      if (movie.owner.toHexString() === ownerId) {
+      if (movie.owner.toHexString() !== ownerId) {
+
+        console.log(movie.owner.toHexString())
+
+
         next(new ForbiddenError('Вы пытаетесь удалить чужой фильм'));
       } else {
         Movie.findByIdAndRemove(_id)

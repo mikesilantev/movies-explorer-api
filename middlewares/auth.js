@@ -11,16 +11,15 @@ module.exports = (req, res, next) => {
   if (!authorization || !authorization.startsWith('Bearer ')) {
     throw new UnauthorizedError('Необходима авторизация');
   }
-
   const token = extractBearerToken(authorization);
-  let payload;
 
+  let payload;
+  // eslint-disable-next-line no-debugger
   try {
     payload = jwt.verify(token, JWT_KEY);
   } catch (err) {
     throw new UnauthorizedError('Необходима авторизация');
   }
-
   req.user = payload;
   next();
 };
